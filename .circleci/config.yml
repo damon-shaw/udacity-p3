@@ -117,7 +117,10 @@ jobs:
           name: Front-end Scan
           command: |
               cd frontend
-              npm audit --audit-level=critical
+              # I added this grep part because it was printing out way too much in CircleCI and I
+              # couldn't see the results.
+              # Command from https://stackoverflow.com/a/50317242/2869332
+              npm audit --audit-level=critical | grep -B 1 -A 10 Critical
 
   scan-backend:
     docker:
@@ -134,7 +137,10 @@ jobs:
           name: Back-end Scan
           command: |
               cd backend
-              npm audit --audit-level=critical
+              # I added this grep part because it was printing out way too much in CircleCI and I
+              # couldn't see the results.
+              # Command from https://stackoverflow.com/a/50317242/2869332
+              npm audit --audit-level=critical | grep -B 1 -A 10 Critical
 
   # deploy-infrastructure:
   #   docker:
