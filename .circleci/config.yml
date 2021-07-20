@@ -83,7 +83,7 @@ jobs:
           name: Front-end Test
           command: |
               cd frontend
-              npm run tests
+              npm run test
                 
   test-backend:
     docker:
@@ -100,7 +100,7 @@ jobs:
           name: Back-end Test
           command: |
               cd backend
-              npm run tests
+              npm run test
             
   scan-frontend:
     docker:
