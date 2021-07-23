@@ -120,7 +120,7 @@ jobs:
               # I added this grep part because it was printing out way too much in CircleCI and I
               # couldn't see the results.
               # Command from https://stackoverflow.com/a/50317242/2869332
-              npm audit --audit-level=critical | grep -B 1 -A 10 Critical
+              npm audit --audit-level=critical | grep -B 1 -A 10 -i critical
 
   scan-backend:
     docker:
@@ -140,7 +140,7 @@ jobs:
               # I added this grep part because it was printing out way too much in CircleCI and I
               # couldn't see the results.
               # Command from https://stackoverflow.com/a/50317242/2869332
-              npm audit --audit-level=critical | grep -B 1 -A 10 Critical
+              npm audit --audit-level=critical | grep -B 1 -A 10 -i critical
 
   # deploy-infrastructure:
   #   docker:
