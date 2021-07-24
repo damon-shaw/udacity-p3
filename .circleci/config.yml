@@ -138,8 +138,13 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: bitnami/aws-cli:latest
+      - image: amazon/aws-cli:latest
     steps:
+      - run:
+          name: Install Required Software
+          command: |
+              yum install -y git
+              yum install -y tar
       # Checkout code from git
       - checkout
       - run:
