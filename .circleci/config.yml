@@ -154,7 +154,16 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=udacity-p3-backend-${CIRCLE_WORKFLOW_ID} \
               --stack-name "udacity-p3-backend-${CIRCLE_WORKFLOW_ID}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"  
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
+      - run:
+          name: Get Back-end IP Address
+          command: |
+            BACKEND_IP_ADDR=aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udacity-p3-backend-${CIRCLE_WORKFLOW_ID}" \
+              --output text
+            echo "Back-end IP Address is $BACKEND_IP_ADDR"
+            echo $BACKEND_IP_ADDR > backend_ip_addr.txt
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -166,15 +175,18 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:project,Values=udacity-p3-backend-${CIRCLE_WORKFLOW_ID}" \
-              --output text \
-              >> inventory
+            # Make sure to go to the directory with the existing Ansible playbook. We need the
+            # existing [web] section, not just the IP address.
+            cd .circleci/ansible
+            echo $BACKEND_IP_ADDR >> inventory
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+              - backend_ip_addr.txt
       # Here's where you will add some code to rollback on failure      
 
   # configure-infrastructure:
