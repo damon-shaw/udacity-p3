@@ -163,7 +163,7 @@ jobs:
           command: |
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters 'Name=tag:project,Values=udacity-p3-backend-${CIRCLE_WORKFLOW_ID}' \
+              --filters "Name=tag:project,Values=udacity-p3-backend-${CIRCLE_WORKFLOW_ID}" \
               --output text \
               >> inventory
       - persist_to_workspace:
