@@ -1,6 +1,6 @@
 ---
 
-- name: "configuration play." 
+- name: "Deploy and start the built application" 
   hosts: web
   user: ubuntu
   gather_facts: false

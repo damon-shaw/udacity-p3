@@ -1,0 +1,16 @@
+---
+- name: "Copy Application Dependencies"
+  become: true
+  copy:
+    src: ~/project/backend/node_modules
+    dest: ~/udacity-p3
+
+- name: "Copy Built Application"
+  become: true
+  copy:
+    src: ~/project/backend/dist
+    dest: ~/udacity-p3
+
+- name: "Start Back-end Server with PM2"
+  become: true
+  command: pm2 start ~/udacity-p3/dist/main.js
