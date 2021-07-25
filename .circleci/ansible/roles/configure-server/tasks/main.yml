@@ -1,0 +1,47 @@
+---
+    # A play to update the local cache of package versions with the latest information from the
+    # central repository.
+    - name: "Update Package Cache"
+      become: true # use sudo
+      apt:
+        update_cache: true
+
+    - name: "Upgrade Packages"
+      become: true
+      apt:
+        upgrade: "safe"
+
+    - name: "Install NodeJS"
+      become: true
+      apt:
+        name: ["nodejs"]
+        state: latest
+        update_cache: true
+
+    - name: "Install Node Package Manager (NPM)"
+      become: true
+      apt:
+        name: ["npm"]
+        state: latest
+        update_cache: true
+
+    - name: "Install PM2"
+      become: true
+      npm:
+        name: pm2
+        global: true
+        production: true
+
+    - name: "Configure Environment"
+      become: true
+      environment:
+        ENVIRONMENT: "production"
+        TYPEORM_CONNECTION: "postgres"
+        TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
+        TYPEORM_HOST: "{{ TYPEORM_HOST }}"
+        TYPEORM_PORT: 5532
+        TYPEORM_USERNAME: "{{ TYPEORM_USERNAME }}"
+        TYPEORM_PASSWORD: "{{ TYPEORM_PASSWORD }}"
+        TYPEORM_DATABASE: "{{ TYPEORM_DATABASE }}"
+
+    
