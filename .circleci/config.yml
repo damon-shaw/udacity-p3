@@ -158,12 +158,12 @@ jobs:
       - run:
           name: Get Back-end IP Address
           command: |
-            BACKEND_IP_ADDR=aws ec2 describe-instances \
+            aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:project,Values=udacity-p3-backend-${CIRCLE_WORKFLOW_ID}" \
-              --output text
+              --output text > backend_ip_addr.txt
+            BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
             echo "Back-end IP Address is $BACKEND_IP_ADDR"
-            echo $BACKEND_IP_ADDR > backend_ip_addr.txt
       - run:
           name: Ensure front-end infrastructure exist
           command: |
