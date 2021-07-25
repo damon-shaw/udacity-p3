@@ -177,6 +177,7 @@ jobs:
           command: |
             # Make sure to go to the directory with the existing Ansible playbook. We need the
             # existing [web] section, not just the IP address.
+            BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
             cd .circleci/ansible
             echo $BACKEND_IP_ADDR >> inventory.txt
             cat inventory.txt
