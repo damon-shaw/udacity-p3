@@ -178,7 +178,7 @@ jobs:
             # Make sure to go to the directory with the existing Ansible playbook. We need the
             # existing [web] section, not just the IP address.
             cd .circleci/ansible
-            echo $BACKEND_IP_ADDR >> inventory
+            echo $BACKEND_IP_ADDR >> inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -210,6 +210,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
+            cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
