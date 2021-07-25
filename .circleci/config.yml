@@ -67,6 +67,11 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/node_modules
+            - project/backend/dist
 
   test-frontend:
     docker:
@@ -246,6 +251,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
+              - backend/migration_output.txt
               - backend/database_migration_status.txt
      # Here's where you will add some code to rollback on failure      
 
