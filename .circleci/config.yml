@@ -249,26 +249,40 @@ jobs:
               - backend/database_migration_status.txt
      # Here's where you will add some code to rollback on failure      
 
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli:latest
+    steps:
+      # Checkout code from git
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
+            sudo yum install nodejs -y
+            sudo yum install npm -y
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+            BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
+            export API_URL="http://${BACKEND_IP_ADDR}:3030"
+            echo "${API_URL}"
+            # Build the application in production mode.
+            cd frontend
+            npm ci
+            npm run build:prod
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            # Copy the build products to the S3 bucket.
+            # The CloudFormation script provided uses "udapeople-${ID}".
+            aws s3 cp --recursive dist "s3://udapeople-${CIRCLE_WORKFLOW_ID}"
+      # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
 #     docker:
@@ -367,8 +381,8 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
