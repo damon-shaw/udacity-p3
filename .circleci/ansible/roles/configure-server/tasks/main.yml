@@ -1,50 +1,48 @@
 ---
-    # A play to update the local cache of package versions with the latest information from the
-    # central repository.
-    - name: "Update Package Cache"
-      become: true # use sudo
-      apt:
-        update_cache: true
+# A play to update the local cache of package versions with the latest information from the
+# central repository.
+- name: "Update Package Cache"
+  become: true # use sudo
+  apt:
+    update_cache: true
 
-    - name: "Upgrade Packages"
-      become: true
-      apt:
-        upgrade: "safe"
+- name: "Upgrade Packages"
+  become: true
+  apt:
+    upgrade: "safe"
 
-    - name: "Install NodeJS"
-      become: true
-      apt:
-        name: ["nodejs"]
-        state: latest
-        update_cache: true
+- name: "Install NodeJS"
+  become: true
+  apt:
+    name: ["nodejs"]
+    state: latest
+    update_cache: true
 
-    - name: "Install Node Package Manager (NPM)"
-      become: true
-      apt:
-        name: ["npm"]
-        state: latest
-        update_cache: true
+- name: "Install Node Package Manager (NPM)"
+  become: true
+  apt:
+    name: ["npm"]
+    state: latest
+    update_cache: true
 
-    - name: "Install PM2"
-      become: true
-      npm:
-        name: pm2
-        global: true
-        production: true
+- name: "Install PM2"
+  become: true
+  npm:
+    name: pm2
+    global: true
+    production: true
 
-    - name: "Configure Environment"
-      become: true
-      environment:
-        # We have to use the lookup functionality to get the environment variables we configured in
-        # CircleCI.
-        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/env_lookup.html
-        ENVIRONMENT: "production"
-        TYPEORM_CONNECTION: "postgres"
-        TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
-        TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
-        TYPEORM_PORT: 5532
-        TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
-        TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
-        TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
-
-    
+- name: "Configure Environment"
+  become: true
+  environment:
+    # We have to use the lookup functionality to get the environment variables we configured in
+    # CircleCI.
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/env_lookup.html
+    ENVIRONMENT: "production"
+    TYPEORM_CONNECTION: "postgres"
+    TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
+    TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
+    TYPEORM_PORT: 5532
+    TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
+    TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+    TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
