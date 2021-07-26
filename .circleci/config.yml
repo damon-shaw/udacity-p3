@@ -226,6 +226,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apk add --update ansible
             # Install AWS CLI through pip. Doing this through cURL doesn't work well.
             pip install awscli
             aws --version
