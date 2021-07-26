@@ -433,7 +433,7 @@ jobs:
       - destroy-environment:
           run_when: on_fail  
 
-cleanup:
+  cleanup:
     docker:
       # Docker image here
       - image: amazon/aws-cli:latest
