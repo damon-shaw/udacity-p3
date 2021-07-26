@@ -14,7 +14,7 @@ commands:
           name: "Delete the front-end files"
           when: << parameters.run_when >>
           command: |
-            aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+            aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID}" --recursive
       - run:
           name: Destroy the back-end stack
           when: << parameters.run_when >>
@@ -342,6 +342,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible curl
+            apk add --update rsync openssh
             # Install NodeJS and NPM in case we need to revert migrations.
             apk add --update nodejs npm
             # Install AWS CLI through pip. Doing this through cURL doesn't work well.
