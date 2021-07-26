@@ -387,7 +387,7 @@ jobs:
           name: Backend smoke test.
           command: |
             BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
-            curl "$BACKEND_IP_ADDR/api/status"
+            curl "http://$BACKEND_IP_ADDR:3030/api/status"
       - run:
           name: Frontend smoke test.
           command: |
@@ -399,10 +399,10 @@ jobs:
               return 0
             fi
       # Here's where you will add some code to rollback on failure
-      - revert-migrations:
-          run_when: on_fail
-      - destroy-environment:
-          run_when: on_fail  
+      # - revert-migrations:
+      #     run_when: on_fail
+      # - destroy-environment:
+      #     run_when: on_fail  
 
   cloudfront-update:
     docker:
@@ -506,7 +506,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cloudfront-update:
+      #     requires: [smoke-test]
+      # - cleanup:
+      #     requires: [cloudfront-update]
