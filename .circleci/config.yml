@@ -279,8 +279,8 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-              - backend/migration_output.txt
-              - backend/database_migration_status.txt
+              - project/backend/migration_output.txt
+              - project/backend/database_migration_status.txt
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           run_when: on_fail   
@@ -340,6 +340,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible curl
+            # Install NodeJS and NPM in case we need to revert migrations.
+            apk add --update nodejs npm
             # Install AWS CLI through pip. Doing this through cURL doesn't work well.
             pip install awscli
             aws --version
