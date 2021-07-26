@@ -292,8 +292,8 @@ jobs:
           command: |
             yum install -y git
             yum install -y tar
-            sudo yum install nodejs -y
-            sudo yum install npm -y
+            yum install nodejs -y
+            yum install npm -y
       # Checkout code from git
       - checkout
       - attach_workspace:
