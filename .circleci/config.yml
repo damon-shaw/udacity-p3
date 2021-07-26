@@ -192,6 +192,9 @@ jobs:
               --output text > backend_ip_addr.txt
             BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
             echo "Back-end IP Address is $BACKEND_IP_ADDR"
+            if [[ -z "$BACKEND_IP_ADDR" ]]; then
+              exit 1
+            fi
       - run:
           name: Ensure front-end infrastructure exist
           command: |
