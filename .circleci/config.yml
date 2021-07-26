@@ -376,7 +376,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apk add --update curl
+            apk add --update ansible curl
+            apk add --update rsync openssh
+            # Install NodeJS and NPM in case we need to revert migrations.
+            apk add --update nodejs npm
             # Install AWS CLI through pip. Doing this through cURL doesn't work well.
             pip install awscli
             aws --version
