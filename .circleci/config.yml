@@ -43,9 +43,6 @@ commands:
             then
               npm run migrations:revert
             fi
-            SUCCESS = 1
-            if(( $SUCCESS==1 )); 
-            then
             
 jobs:
   build-frontend:
@@ -290,16 +287,17 @@ jobs:
       # Docker image here that supports AWS CLI
       - image: amazon/aws-cli:latest
     steps:
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y git
+            yum install -y tar
+            sudo yum install nodejs -y
+            sudo yum install npm -y
       # Checkout code from git
       - checkout
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            # BACKEND_IP_ADDR=`cat backend_ip_addr.txt`
-            sudo yum install nodejs -y
-            sudo yum install npm -y
       - run:
           name: Get backend url
           command: |
@@ -399,11 +397,13 @@ jobs:
       - image: amazon/aws-cli:latest
     steps:
       # Checkout code from git
-      - checkout
       - run:
           name: Install dependencies
           command: |
             # your code here
+            yum install -y git
+            yum install -y tar
+      - checkout
       - run:
           # Get the existing production workflow ID here. If we deploy a new one it makes it harder
           # to find the original.
@@ -439,6 +439,12 @@ cleanup:
       - image: amazon/aws-cli:latest
     steps:
       # Checkout code from git
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            yum install -y git
+            yum install -y tar
       - checkout
       - attach_workspace:
           at: ~/
