@@ -359,10 +359,10 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
-      - revert-migrations:
-          run_when: on_fail
-      - destroy-environment:
-          run_when: on_fail 
+      # - revert-migrations:
+      #     run_when: on_fail
+      # - destroy-environment:
+      #     run_when: on_fail 
 
   smoke-test:
     docker:
@@ -470,10 +470,11 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              aws cloudformation delete-stack --stack-name "${STACKS[@]}"
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws cloudformation delete-stack --stack-name "udacity-p3-backend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udacity-p3-frontend-${OldWorkflowID}"
             fi
             
 
