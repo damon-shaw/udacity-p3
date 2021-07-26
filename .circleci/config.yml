@@ -452,16 +452,16 @@ cleanup:
           name: Get old stack workflow id
           command: |
             export OldWorkflowID=`cat old_workflow_id.txt`
-            # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
       - run:
           name: Remove old stacks and files
           command: |
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              # your code here
+              aws cloudformation delete-stack --stack-name "${STACKS[@]}"
             fi
+            aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
             
 
 workflows:
@@ -492,7 +492,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
