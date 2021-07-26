@@ -1,15 +1,17 @@
 ---
 - name: "Copy Application Dependencies"
   become: true
-  copy:
+  synchronize:
     src: ~/project/backend/node_modules
     dest: ~/udacity-p3
+    recursive: true
 
 - name: "Copy Built Application"
   become: true
-  copy:
+  synchronize:
     src: ~/project/backend/dist
     dest: ~/udacity-p3
+    recursive: true
 
 - name: "Start Back-end Server with PM2"
   become: true
