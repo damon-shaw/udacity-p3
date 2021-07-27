@@ -271,6 +271,7 @@ jobs:
           command: |
             cd backend
             npm run migrations > migration_output.txt
+            cat migration_output.txt
       - run:
           # This task was originally to publish migration results to a memstash URL. External
           # connections like this aren't always an option for projects, so I wanted to keep the
