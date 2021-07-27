@@ -16,8 +16,9 @@
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/env_lookup.html
     ENVIRONMENT: "production"
     TYPEORM_CONNECTION: "postgres"
-    TYPEORM_MIGRATIONS_DIR: "./src/migrations"
-    TYPEORM_ENTITIES: "./src/modules/**/*.entity.ts"
+    TYPEORM_MIGRATIONS_DIR: "./migrations"
+    TYPEORM_MIGRATIONS: "./migrations/*.js"
+    TYPEORM_ENTITIES: "./modules/domain/**/*.entity.js"
     TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
     TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
     TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
