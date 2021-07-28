@@ -1,0 +1,14 @@
+[URL01]
+https://github.com/damon-shaw/udacity-p3/
+
+[URL02]
+http://udapeople-f2ddc33b-9113-4126-9071-c6016666633a.s3.amazonaws.com/
+
+[URL03]
+http://d299jwd7k9rj9h.cloudfront.net/
+
+[URL04]
+http://3.216.126.129:3030/api
+
+[URL05]
+http://44.192.117.171:9090/targets
